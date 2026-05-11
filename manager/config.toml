@@ -1,0 +1,4 @@
+api_base = "https://logistics-license.paminduvidusaka.workers.dev"
+admin_key = "b6e805069d3e6e28fdc44b0313c3b3f172909cc76df9ce5b2aaf615d8734b937"
+issued_by = "Pamidu"
+product_version = "4.0.0"

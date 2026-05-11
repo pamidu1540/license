@@ -431,19 +431,21 @@ func (m model) updateList(msg tea.Msg, cmds []tea.Cmd) (model, []tea.Cmd) {
 	if k, ok := msg.(tea.KeyMsg); ok {
 		switch k.String() {
 		case "enter":
-			sel := m.licTable.SelectedRow()
-			if len(sel) > 0 {
-				id := sel[0]
-				m.loading = true
-				cmds = append(cmds, func() tea.Msg {
-					client := NewAPIClient()
-					lic, acts, err := client.GetLicense(id)
-					if err != nil {
-						return errMsg{err}
-					}
-					return licenseDetail{license: lic, activations: acts}
-				})
-			}
+    sel := m.licTable.SelectedRow()
+    if len(sel) > 0 {
+        id := sel[0] // This is the 'id' the compiler says is unused
+        m.loading = true
+        cmds = append(cmds, func() tea.Msg {
+            client := NewAPIClient()
+            // We use 'id' here, and use '_' to ignore 'evts' for now 
+            // because your licenseDetail struct doesn't have an events field yet.
+            lic, acts, _, err := client.GetLicense(id) 
+            if err != nil {
+                return errMsg{err}
+            }
+            return licenseDetail{license: lic, activations: acts}
+        })
+    }
 		}
 	}
 	var cmd tea.Cmd
@@ -791,7 +793,7 @@ func (m model) viewDetail() string {
 		actLines = append(actLines, fmt.Sprintf("  • %s  %s  last seen %s%s",
 			valueStyle.Render(a.Hostname),
 			mutedStyle.Render(a.IPAddress),
-			mutedStyle.Render(time.Unix(a.LastVerifiedAt, 0).Format("02 Jan 15:04")),
+			mutedStyle.Render(time.Unix(a.LastSeenAt, 0).Format("02 Jan 15:04")),
 			revoked,
 		))
 	}
