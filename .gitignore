@@ -1,0 +1,60 @@
+# ==========================================
+# OS & Editor Files
+# ==========================================
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+
+# ==========================================
+# Secrets & Configurations (CRITICAL)
+# ==========================================
+.env
+.env.*
+*.pem
+*.key
+certs/
+secrets.json
+
+# ==========================================
+# Go (If you wrote the server in Go)
+# ==========================================
+bin/
+obj/
+*.exe
+*.test
+*.out
+vendor/
+go.work
+
+# ==========================================
+# Python (If you used FastAPI/Flask)
+# ==========================================
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+.pytest_cache/
+
+# ==========================================
+# Node.js / TypeScript (If you used Express/Workers)
+# ==========================================
+node_modules/
+dist/
+build/
+.wrangler/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ==========================================
+# Databases & Logs
+# ==========================================
+*.sqlite
+*.sqlite3
+*.db
+*.log
+data/

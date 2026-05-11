@@ -1,0 +1,17 @@
+{
+  "name": "logistics-license-worker",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev":    "wrangler dev",
+    "deploy": "wrangler deploy",
+    "db:init": "wrangler d1 execute logistics-licenses --file=src/schema.sql",
+    "db:init:remote": "wrangler d1 execute logistics-licenses --remote --file=src/schema.sql",
+    "types":  "wrangler types"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20241022.0",
+    "typescript": "^5.5.4",
+    "wrangler": "^3.78.7"
+  }
+}

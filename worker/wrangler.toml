@@ -1,0 +1,32 @@
+name                = "logistics-license"
+main                = "src/index.ts"
+compatibility_date  = "2024-09-23"
+compatibility_flags = ["nodejs_compat"]
+
+# ── D1 Database ───────────────────────────────────────────────────────────────
+[[d1_databases]]
+binding       = "DB"
+database_name = "logistics-licenses"
+database_id   = "REPLACE_WITH_YOUR_D1_DATABASE_ID"   # wrangler d1 create logistics-licenses
+
+# ── KV Namespace (rate limiting) ──────────────────────────────────────────────
+[[kv_namespaces]]
+binding = "RATE_LIMIT_KV"
+id      = "REPLACE_WITH_YOUR_KV_NAMESPACE_ID"         # wrangler kv:namespace create RATE_LIMIT
+
+# ── Secrets (set via wrangler secret put, never in this file) ─────────────────
+#   wrangler secret put ADMIN_API_KEY   → openssl rand -hex 32
+#   wrangler secret put TOKEN_SECRET    → openssl rand -hex 32
+#
+# TOKEN_SECRET is baked into the engine binary at build time and used to verify
+# the signed 24 h tokens offline. Keep it safe — rotating it invalidates all
+# currently-cached tokens and forces every engine to re-activate.
+
+# ── Routes ────────────────────────────────────────────────────────────────────
+[[routes]]
+pattern   = "license.yourcompany.com/*"
+zone_name = "yourcompany.com"
+
+# ── Scheduled job — prune event log every Sunday 02:00 UTC ───────────────────
+[[triggers]]
+crons = ["0 2 * * 0"]
