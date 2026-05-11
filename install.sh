@@ -34,13 +34,14 @@ readonly SERVICE_NAME="logistics"
 readonly BIN_PATH="/usr/local/bin/logistics"
 readonly MIN_RAM_MB=512
 readonly MIN_DISK_GB=5
+readonly LICENSE_API="https://logistics-license.paminduvidusaka.workers.dev/v1/activate"
 
 # ── License public key (Ed25519) ──────────────────────────────────────────────
 # This is the PUBLIC key only. The matching private key never leaves your laptop.
 # Generated with: openssl genpkey -algorithm ed25519 -out license_priv.pem
 # Exported with:  openssl pkey -in license_priv.pem -pubout | openssl pkey -pubin -outform DER | xxd -p -c 256
 # Replace with your actual public key before shipping:
-readonly LICENSE_PUBKEY_HEX="REPLACE_WITH_YOUR_ED25519_PUBLIC_KEY_64_HEX_CHARS"
+readonly LICENSE_PUBKEY_HEX="2aedb7bd6d094c3e73280d404c064c4f71241059e3189a68528e973bef49b0f4"
 
 # ── Colours ───────────────────────────────────────────────────────────────────
 if [[ -t 1 ]]; then
@@ -202,6 +203,7 @@ verify_license() {
 
     case "$http_code" in
       200)
+        # These lines extract the data from Cloudflare to build the .env file automatically
         LICENSE_CUSTOMER=$(echo "$body" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('customer','Customer'))" 2>/dev/null || echo "Customer")
         LICENSE_PLAN=$(echo     "$body" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('plan','standard'))"     2>/dev/null || echo "standard")
         LICENSE_EXPIRES=$(echo  "$body" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('expires','N/A'))"       2>/dev/null || echo "N/A")
